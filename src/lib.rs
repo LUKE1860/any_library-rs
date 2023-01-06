@@ -1,5 +1,4 @@
 use std::any::{Any,TypeId,type_name};
-//write checks for every type in standard library
 pub struct TypeChecker<T>(T);
 impl <T:'static>TypeChecker<T>{
 #[inline(always)]
@@ -67,16 +66,24 @@ pub fn is_ref_cell(_:T)->bool{
 type_name::<T>().contains("::RefCell")
 }
 ///checks if variable is a Vec
+#[inline (always)]
 pub fn is_vec(_:T)->bool{
 type_name::<T>().contains("::Vec")
 }
 ///checks if variable is a HashMap
+#[inline (always)]
 pub fn is_hash_map(_:T)->bool{
 type_name::<T>().contains("::HashMap")
 }
 ///checks if variable is a BinaryHeap
+#[inline (always)]
 pub fn is_binary_heap(_:T)->bool{
 type_name::<T>().contains("::BinaryHeap")
+}
+//checks if variable is a ()
+#[inline (always)]
+pub fn is_unit(_:T)->bool{
+type_name::<T>().contains("()")
 }
 }
 #[cfg (test)]
@@ -109,5 +116,6 @@ assert_eq!(TypeChecker::is_vec(Vec::<i32>::new()),true);
 assert_eq!(TypeChecker::is_vec(Vec::<Test>::new()),true);
 assert_eq!(TypeChecker::is_hash_map(HashMap::<String,i32>::new()),true);
 assert_eq!(TypeChecker::is_binary_heap(BinaryHeap::<i32>::new()),true);
+assert_eq!(TypeChecker::is_unit(()),true)
 }
 }
