@@ -1,6 +1,6 @@
 [package]
 name = "any_library"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 authors=["Luke <https://github.com/LUKE1860>"]
 rust-version = "1.60"
