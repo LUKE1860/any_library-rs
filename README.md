@@ -1,2 +1,2 @@
 # any_library-rs
-## Little libray for type checking
+## Little library for type checking
