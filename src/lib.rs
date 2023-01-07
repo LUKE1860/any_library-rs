@@ -130,6 +130,8 @@ type_name::<T>().contains("Condvar")
 pub fn is_arc(_:T)->bool{
 type_name::<T>().contains("Arc")
 }
+///checks if variable is a Barrier
+#[inline (always)]
 pub fn is_barrier(_:T)->bool{
 type_name::<T>().contains("Barrier")
 }
