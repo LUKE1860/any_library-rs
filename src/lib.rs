@@ -110,7 +110,7 @@ type_name::<T>().contains("f32")
 pub fn is_double(_:T)->bool{
 type_name::<T>().contains("f64")
 }
-///checks if variables is a *const pointer or *mut pointer 
+///checks if variable is a *const pointer or *mut pointer 
 #[inline (always)]
 pub fn is_ptr(_:T)->bool{
 type_name::<T>().contains("*const") || type_name::<T>().contains("*mut")
