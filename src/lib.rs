@@ -12,7 +12,7 @@ pub fn is_string(_:T)->bool{
 TypeId::of::<T>()==TypeId::of::<String>()
 }
 #[inline(always)]
-///checks if variable is a type of int ranging from u8-usize
+///checks if variable is a type of unsigned ranging from u8-usize
 pub fn is_unsigned(_:T)->bool{
 let vec:Vec<TypeId>=vec![1u8.type_id(),1u16.type_id(),1u32.type_id(),
 1u64.type_id(),1u128.type_id(),1usize.type_id()];
@@ -115,9 +115,28 @@ type_name::<T>().contains("f64")
 pub fn is_ptr(_:T)->bool{
 type_name::<T>().contains("*const") || type_name::<T>().contains("*mut")
 }
+///checks if variable is a Mutex
+#[inline (always)]
+pub fn is_mutex(_:T)->bool{
+type_name::<T>().contains("::Mutex")
+}
+///checks if variable is a Condvar
+#[inline (always)]
+pub fn is_condvar(_:T)->bool{
+type_name::<T>().contains("Condvar")
+}
+///checks if variable is a Arc
+#[inline (always)]
+pub fn is_arc(_:T)->bool{
+type_name::<T>().contains("Arc")
+}
+pub fn is_barrier(_:T)->bool{
+type_name::<T>().contains("Barrier")
+}
 }
 #[cfg (test)]
 mod tests{
+use std::sync::{Mutex,Arc,Condvar,Barrier};
 use std::cell::{RefCell,Cell};
 use std::collections::{HashMap,BinaryHeap};
 use crate::TypeChecker;
@@ -163,5 +182,9 @@ assert_eq!(TypeChecker::is_float(float),true);
 assert_eq!(TypeChecker::is_double(30.2),true);
 assert_eq!(TypeChecker::is_ptr(const_ptr),true);
 assert_eq!(TypeChecker::is_ptr(mut_ptr),true);
+assert_eq!(TypeChecker::is_mutex(Arc::new(Mutex::new(0))),true);
+assert_eq!(TypeChecker::is_arc(Arc::new(Mutex::new(2))),true);
+assert_eq!(TypeChecker::is_condvar(Arc::new((Mutex::new(false), Condvar::new()))),true);
+assert_eq!(TypeChecker::is_barrier(Arc::new(Barrier::new(10))),true);
 }
 }
