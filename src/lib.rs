@@ -80,10 +80,40 @@ type_name::<T>().contains("::HashMap")
 pub fn is_binary_heap(_:T)->bool{
 type_name::<T>().contains("::BinaryHeap")
 }
-//checks if variable is a ()
+///checks if variable is a ()
 #[inline (always)]
 pub fn is_unit(_:T)->bool{
 type_name::<T>().contains("()")
+}
+///checks if variable is a &dyn Any or dyn Any
+#[inline (always)]
+pub fn is_any(_:T)->bool{
+type_name::<T>().contains("::Any")
+}
+///checks if variable is a char
+#[inline (always)]
+pub fn is_char(_:T)->bool{
+type_name::<T>().contains("char")
+}
+///checks if variable is a &str
+#[inline (always)]
+pub fn is_str(_:T)->bool{
+type_name::<T>().contains("&str")
+}
+///checks if variable is a float
+#[inline (always)]
+pub fn is_float(_:T)->bool{
+type_name::<T>().contains("f32")
+}
+///checks if variable is a double
+#[inline (always)]
+pub fn is_double(_:T)->bool{
+type_name::<T>().contains("f64")
+}
+///checks if variables is a *const pointer or *mut pointer 
+#[inline (always)]
+pub fn is_ptr(_:T)->bool{
+type_name::<T>().contains("*const") || type_name::<T>().contains("*mut")
 }
 }
 #[cfg (test)]
@@ -91,10 +121,17 @@ mod tests{
 use std::cell::{RefCell,Cell};
 use std::collections::{HashMap,BinaryHeap};
 use crate::TypeChecker;
+use std::any::Any;
 struct Test;
 #[inline(always)]
 #[test]
 fn testing(){
+let float:f32=30.2;
+let mut num=30;
+let any:&dyn Any=&40;
+let mut_ptr:*mut i32=&mut num;
+let const_ptr:*const f32=&float;
+let any_box:Box<dyn Any>=Box::new(40);
 assert_eq!(TypeChecker::is_boxed(Box::new(30)),true);
 assert_eq!(TypeChecker::is_string("Hello".to_string()),true);
 assert_eq!(TypeChecker::is_unsigned(1u8),true);
@@ -116,6 +153,15 @@ assert_eq!(TypeChecker::is_vec(Vec::<i32>::new()),true);
 assert_eq!(TypeChecker::is_vec(Vec::<Test>::new()),true);
 assert_eq!(TypeChecker::is_hash_map(HashMap::<String,i32>::new()),true);
 assert_eq!(TypeChecker::is_binary_heap(BinaryHeap::<i32>::new()),true);
-assert_eq!(TypeChecker::is_unit(()),true)
+assert_eq!(TypeChecker::is_unit(()),true);
+assert_eq!(TypeChecker::is_any(Box::<&dyn Any>::new(&30)),true);
+assert_eq!(TypeChecker::is_any(any_box),true);
+assert_eq!(TypeChecker::is_any(any),true);
+assert_eq!(TypeChecker::is_char('s'),true);
+assert_eq!(TypeChecker::is_str("hello"),true);
+assert_eq!(TypeChecker::is_float(float),true);
+assert_eq!(TypeChecker::is_double(30.2),true);
+assert_eq!(TypeChecker::is_ptr(const_ptr),true);
+assert_eq!(TypeChecker::is_ptr(mut_ptr),true);
 }
 }
