@@ -135,12 +135,54 @@ type_name::<T>().contains("Arc")
 pub fn is_barrier(_:T)->bool{
 type_name::<T>().contains("Barrier")
 }
+///checks if variable is a VecDeque
+#[inline (always)]
+pub fn is_vec_deque(_:T)->bool{
+type_name::<T>().contains("VecDeque")
+}
+///checks if variable is a LinkedList
+#[inline (always)]
+pub fn is_linked_list(_:T)->bool{
+type_name::<T>().contains("LinkedList")
+}
+///checks if variable is a BTreeMap
+#[inline (always)]
+pub fn is_btree_map(_:T)->bool{
+type_name::<T>().contains("BTreeMap")
+}
+///checks if variable is a HashSet
+pub fn is_hash_set(_:T)->bool{
+type_name::<T>().contains("HashSet")
+}
+///checks if variable is a BTreeSet
+#[inline (always)]
+pub fn is_btree_set(_:T)->bool{
+type_name::<T>().contains("BTreeSet")
+}
+///checks if variable is a Cow
+#[inline (always)]
+pub fn is_cow(_:T)->bool{
+type_name::<T>().contains("Cow")
+}
+///checks if variable is Args
+#[inline (always)]
+pub fn is_args(_:T)->bool{
+type_name::<T>().contains("Args")
+}
+///checks if variable is a PathBuf
+#[inline (always)]
+pub fn is_path_buf(_:T)->bool{
+type_name::<T>().contains("PathBuf")
+}
+//todo! implement function pointer and Path
 }
 #[cfg (test)]
 mod tests{
+use std::borrow::Cow;
+use std::env;
 use std::sync::{Mutex,Arc,Condvar,Barrier};
 use std::cell::{RefCell,Cell};
-use std::collections::{HashMap,BinaryHeap};
+use std::collections::{HashMap,BinaryHeap,VecDeque,LinkedList,BTreeMap,HashSet,BTreeSet};
 use crate::TypeChecker;
 use std::any::Any;
 struct Test;
@@ -188,5 +230,12 @@ assert_eq!(TypeChecker::is_mutex(Arc::new(Mutex::new(0))),true);
 assert_eq!(TypeChecker::is_arc(Arc::new(Mutex::new(2))),true);
 assert_eq!(TypeChecker::is_condvar(Arc::new((Mutex::new(false), Condvar::new()))),true);
 assert_eq!(TypeChecker::is_barrier(Arc::new(Barrier::new(10))),true);
+assert_eq!(TypeChecker::is_vec_deque(VecDeque::<i32>::new()),true);
+assert_eq!(TypeChecker::is_linked_list(LinkedList::<i32>::new()),true);
+assert_eq!(TypeChecker::is_btree_map(BTreeMap::<f64,String>::new()),true);
+assert_eq!(TypeChecker::is_hash_set(HashSet::<String>::new()),true);
+assert_eq!(TypeChecker::is_btree_set(BTreeSet::<f32>::new()),true);
+assert_eq!(TypeChecker::is_cow(Cow::from("End")),true);
+assert_eq!(TypeChecker::is_args(env::args()),true);
 }
 }
