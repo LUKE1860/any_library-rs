@@ -10,4 +10,5 @@ readme = "README.md"
 repository = "https://github.com/LUKE1860/any_library-rs"
 license = "GPL-2.0-or-later"
 keywords = ["any","type_checking"]
+opt-level=3
 [dependencies]
