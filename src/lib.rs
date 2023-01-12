@@ -1,4 +1,6 @@
 use std::any::{Any,TypeId,type_name};
+use std::fs;
+use std::env;
 pub struct TypeChecker<T>(T);
 impl <T:'static>TypeChecker<T>{
 #[inline(always)]
@@ -174,10 +176,30 @@ type_name::<T>().contains("Args")
 pub fn is_path_buf(_:T)->bool{
 type_name::<T>().contains("PathBuf")
 }
-//todo! implement function pointer and Path
+///checks if variable is a fn pointer
+#[inline (always)]
+pub fn is_fn_pointer(_:T)->bool{
+type_name::<T>().contains("fn")
+}
+///checks if variable is a function
+#[inline (always)]
+pub fn is_fn(_:T)->bool{
+    let name=env!("CARGO_PKG_NAME");
+    if name.contains("-"){
+    let string=name.replace("-","_");
+    return type_name::<T>().contains(&string);
+    }
+    return type_name::<T>().contains(name);
+}
+///checks if variable is a path
+#[inline (always)]
+pub fn is_path(_:T)->bool{
+type_name::<T>().contains("::Path")
+}
 }
 #[cfg (test)]
 mod tests{
+use std::path::{PathBuf,Path};
 use std::borrow::Cow;
 use std::env;
 use std::sync::{Mutex,Arc,Condvar,Barrier};
@@ -186,10 +208,14 @@ use std::collections::{HashMap,BinaryHeap,VecDeque,LinkedList,BTreeMap,HashSet,B
 use crate::TypeChecker;
 use std::any::Any;
 struct Test;
+fn hello()->i32{
+0
+}
 #[inline(always)]
 #[test]
 fn testing(){
 let float:f32=30.2;
+let fn_pointer:fn()->i32=hello;
 let mut num=30;
 let any:&dyn Any=&40;
 let mut_ptr:*mut i32=&mut num;
@@ -237,5 +263,9 @@ assert_eq!(TypeChecker::is_hash_set(HashSet::<String>::new()),true);
 assert_eq!(TypeChecker::is_btree_set(BTreeSet::<f32>::new()),true);
 assert_eq!(TypeChecker::is_cow(Cow::from("End")),true);
 assert_eq!(TypeChecker::is_args(env::args()),true);
+assert_eq!(TypeChecker::is_fn_pointer(fn_pointer),true);
+assert_eq!(TypeChecker::is_fn(hello),true);
+assert_eq!(TypeChecker::is_path_buf(PathBuf::new()),true);
+assert_eq!(TypeChecker::is_path(Path::new()),true);
 }
 }
