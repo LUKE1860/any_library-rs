@@ -1,5 +1,4 @@
 use std::any::{Any,TypeId,type_name};
-use std::fs;
 use std::env;
 pub struct TypeChecker<T>(T);
 impl <T:'static>TypeChecker<T>{
