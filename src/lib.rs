@@ -195,17 +195,39 @@ pub fn is_fn(_:T)->bool{
 pub fn is_path(_:T)->bool{
 type_name::<T>().contains("::Path")
 }
+///checks if variable is a tuple
+#[inline (always)]
+pub fn is_tuple(_:T)->bool{
+type_name::<T>().contains("(") && type_name::<T>().contains(",") && type_name::<T>().contains(")")
+}
+///checks if variable is a command
+#[inline (always)]
+pub fn is_command(_:T)->bool{
+type_name::<T>().contains("::Command")
+}
+///checks if variable is a boolean
+#[inline (always)]
+pub fn is_bool(_:T)->bool{
+type_name::<T>().contains("bool")
+}
+///checks if variable is a Rc
+#[inline (always)]
+pub fn is_rc(_:T)->bool{
+type_name::<T>().contains("Rc")
+}
 }
 #[cfg (test)]
 mod tests{
 use std::path::{PathBuf,Path};
 use std::borrow::Cow;
 use std::env;
+use std::rc::Rc;
 use std::sync::{Mutex,Arc,Condvar,Barrier};
 use std::cell::{RefCell,Cell};
 use std::collections::{HashMap,BinaryHeap,VecDeque,LinkedList,BTreeMap,HashSet,BTreeSet};
 use crate::TypeChecker;
 use std::any::Any;
+use std::process::Command;
 struct Test;
 fn hello()->i32{
 0
@@ -265,6 +287,11 @@ assert_eq!(TypeChecker::is_args(env::args()),true);
 assert_eq!(TypeChecker::is_fn_pointer(fn_pointer),true);
 assert_eq!(TypeChecker::is_fn(hello),true);
 assert_eq!(TypeChecker::is_path_buf(PathBuf::new()),true);
-assert_eq!(TypeChecker::is_path(Path::new()),true);
+assert_eq!(TypeChecker::is_path(Path::new("hello.txt")),true);
+assert_eq!(TypeChecker::is_tuple((30,20)),true);
+assert_eq!(TypeChecker::is_tuple(()),false);
+assert_eq!(TypeChecker::is_command(Command::new("sh")),true);
+assert_eq!(TypeChecker::is_bool(true),true);
+assert_eq!(TypeChecker::is_rc(Rc::new(30)),true);
 }
 }
