@@ -11,3 +11,6 @@ repository = "https://github.com/LUKE1860/any_library-rs"
 license = "GPL-2.0-or-later"
 keywords = ["any","type_checking"]
 [dependencies]
+[profile.dev]
+lto =true
+opt-level=3
