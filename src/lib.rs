@@ -215,6 +215,65 @@ type_name::<T>().contains("bool")
 pub fn is_rc(_:T)->bool{
 type_name::<T>().contains("Rc")
 }
+///checks if variable is a u8
+#[inline (always)]
+pub fn is_u8(_:T)->bool{
+type_name::<T>().contains("u8")
+}
+///checks if variable is a u16
+#[inline (always)]
+pub fn is_u16(_:T)->bool{
+type_name::<T>().contains("u16")
+}
+///checks if variable is a u32
+#[inline (always)]
+pub fn is_u32(_:T)->bool{
+type_name::<T>().contains("u32")
+}
+///checks if variable is u64
+#[inline (always)]
+pub fn is_u64(_:T)->bool{
+type_name::<T>().contains("u64")
+}
+///checks if variable is a u128
+#[inline (always)]
+pub fn is_u128(_:T)->bool{
+type_name::<T>().contains("u128")
+}
+///checks if variable is a usize
+pub fn is_usize(_:T)->bool{
+type_name::<T>().contains("usize")
+}
+///checks if variable is a i8
+#[inline (always)]
+pub fn is_i8(_:T)->bool{
+type_name::<T>().contains("i8")
+}
+///checks if variable is a i16
+#[inline (always)]
+pub fn is_i16(_:T)->bool{
+type_name::<T>().contains("i16")
+}
+///checks if variable is a i32
+#[inline (always)]
+pub fn is_i32(_:T)->bool{
+type_name::<T>().contains("i32")
+}
+///checks if variable is a i64
+#[inline (always)]
+pub fn is_i64(_:T)->bool{
+type_name::<T>().contains("i64")
+}
+///check if variable is a i128
+#[inline (always)]
+pub fn is_i128(_:T)->bool{
+type_name::<T>().contains("i128")
+}
+///checks if variable is a isize
+#[inline (always)]
+pub fn is_isize(_:T)->bool{
+type_name::<T>().contains("isize")
+}
 }
 #[cfg (test)]
 mod tests{
@@ -293,5 +352,17 @@ assert_eq!(TypeChecker::is_tuple(()),false);
 assert_eq!(TypeChecker::is_command(Command::new("sh")),true);
 assert_eq!(TypeChecker::is_bool(true),true);
 assert_eq!(TypeChecker::is_rc(Rc::new(30)),true);
+assert_eq!(TypeChecker::is_u8(1u8),true);
+assert_eq!(TypeChecker::is_u16(1u16),true);
+assert_eq!(TypeChecker::is_u32(1u32),true);
+assert_eq!(TypeChecker::is_u64(1u64),true);
+assert_eq!(TypeChecker::is_u128(1u128),true);
+assert_eq!(TypeChecker::is_usize(1usize),true);
+assert_eq!(TypeChecker::is_i8(1i8),true);
+assert_eq!(TypeChecker::is_i16(1i16),true);
+assert_eq!(TypeChecker::is_i32(1i32),true);
+assert_eq!(TypeChecker::is_i64(1i64),true);
+assert_eq!(TypeChecker::is_i128(1i128),true);
+assert_eq!(TypeChecker::is_isize(1isize),true);
 }
 }
