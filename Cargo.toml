@@ -14,3 +14,4 @@ keywords = ["any","type_checking"]
 [profile.dev]
 lto =true
 opt-level=3
+debug = false
