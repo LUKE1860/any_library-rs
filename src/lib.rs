@@ -30,8 +30,8 @@ count+=0;
 }
 }
 match count{
-1=>return true,
-_=>return false,
+1=>true,
+_=>false,
 }
 }
 #[inline(always)]
@@ -52,8 +52,8 @@ pub fn is_integer(_:T)->bool{
     }
     }
     match count{
-    1=>return true,
-    _=>return false,
+    1=>true,
+    _=>false,
     }
 }
 #[inline (always)]
@@ -184,7 +184,7 @@ type_name::<T>().contains("fn")
 #[inline (always)]
 pub fn is_fn(_:T)->bool{
     let name=env!("CARGO_PKG_NAME");
-    if name.contains("-"){
+    if name.contains('-'){
     let string=name.replace("-","_");
     return type_name::<T>().contains(&string);
     }
@@ -198,7 +198,7 @@ type_name::<T>().contains("::Path")
 ///checks if variable is a tuple
 #[inline (always)]
 pub fn is_tuple(_:T)->bool{
-type_name::<T>().contains("(") && type_name::<T>().contains(",") && type_name::<T>().contains(")")
+type_name::<T>().contains('(') && type_name::<T>().contains(',') && type_name::<T>().contains(')')
 }
 ///checks if variable is a command
 #[inline (always)]
@@ -274,9 +274,30 @@ type_name::<T>().contains("i128")
 pub fn is_isize(_:T)->bool{
 type_name::<T>().contains("isize")
 }
+///checks if variable is a TypeId
+#[inline (always)]
+pub fn is_type_id(_:T)->bool{
+type_name::<T>().contains("TypeId")
+}
+///checks if variable is a NonZero
+#[inline (always)]
+fn is_non_zero(_:T)->bool{
+type_name::<T>().contains("NonZero")
+}
+///checks if variable is pinned
+#[inline (always)]
+fn is_pin(_:T)->bool{
+type_name::<T>().contains("Pin")
+}
+///checks if variable is a closure
+#[inline (always)]
+fn is_closure(_:T)->bool{
+type_name::<T>().contains("closure")
+}
 }
 #[cfg (test)]
 mod tests{
+use std::pin::Pin;
 use std::path::{PathBuf,Path};
 use std::borrow::Cow;
 use std::env;
@@ -287,7 +308,9 @@ use std::collections::{HashMap,BinaryHeap,VecDeque,LinkedList,BTreeMap,HashSet,B
 use crate::TypeChecker;
 use std::any::Any;
 use std::process::Command;
+use std::num::NonZeroI8;  
 struct Test;
+const POINTY:i32=4;
 fn hello()->i32{
 0
 }
@@ -364,5 +387,9 @@ assert_eq!(TypeChecker::is_i32(1i32),true);
 assert_eq!(TypeChecker::is_i64(1i64),true);
 assert_eq!(TypeChecker::is_i128(1i128),true);
 assert_eq!(TypeChecker::is_isize(1isize),true);
+assert_eq!(TypeChecker::is_type_id(1i8.type_id()),true);
+assert_eq!(TypeChecker::is_non_zero(NonZeroI8::new(1).unwrap()),true);
+assert_eq!(TypeChecker::is_closure(||println!("Hello")),true);
+assert_eq!(TypeChecker::is_pin(Pin::new(&POINTY)),true);
 }
 }
