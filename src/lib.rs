@@ -281,17 +281,17 @@ type_name::<T>().contains("TypeId")
 }
 ///checks if variable is a NonZero
 #[inline (always)]
-fn is_non_zero(_:T)->bool{
+pub fn is_non_zero(_:T)->bool{
 type_name::<T>().contains("NonZero")
 }
 ///checks if variable is pinned
 #[inline (always)]
-fn is_pin(_:T)->bool{
+pub fn is_pin(_:T)->bool{
 type_name::<T>().contains("Pin")
 }
 ///checks if variable is a closure
 #[inline (always)]
-fn is_closure(_:T)->bool{
+pub fn is_closure(_:T)->bool{
 type_name::<T>().contains("closure")
 }
 }
